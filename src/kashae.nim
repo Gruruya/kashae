@@ -16,7 +16,7 @@ type
     c.uncache()
     c.clear()
 
-  CacheOptions* = object
+  CacheOptions = object
     flags*: set[CacheOption]
     size*: int
   AnyMatrix*[R, C: static int; T] = concept m, var mvar, type M
@@ -122,7 +122,7 @@ proc cacheOptImpl(options: CacheOptions, body: NimNode): NimNode =
 
   if clearFunc in options.flags: # Adds a `clearCache` lambda internally for allowing clearing the cache through a function call
     let clearCacheLambda = ident"clearCache"
-    newBody.insert 2:
+    newBody.insert 1:
       genast(clearCacheLambda, cacheName):
         let clearCacheLambda {.used.} = proc() = cacheName.clear
 
